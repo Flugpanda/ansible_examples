@@ -1,5 +1,15 @@
 - hosts: 127.0.0.1
   connection: local
+  become: yes
+  vars:
+    - interface: lxcbr0
+
+# Make sure dnsmasq is installed
+  tasks:  
+  - name: install dnsmasq
+    yum:
+      name: dnsmasq
+      state: latest
 
 # install lxc packages
   tasks:  
@@ -8,8 +18,60 @@
       name: lxc, lxc-extra, lxc-templates
       state: latest
 
-# install pip for python management
+# install python for use python-lxc management
   - name: install pip
     yum:
       name: pip, python-setuptools, python3-virtualenv, python3-lxc
       state: latest
+
+# https://fedoraproject.org/wiki/LXC
+# enable the LXC bridge
+  - copy:
+      dest: /etc/default/lxc-net
+      content: |
+        USE_LXC_BRIDGE="true"
+  - copy:
+      dest: /etc/sysconfig/lxc
+      content: |
+        USE_LXC_BRIDGE="true"
+
+# configure LCX bridge
+  - copy:
+      dest: /etc/lxc/default.conf
+      content: |
+        lxc.network.type = veth
+        lxc.network.link = {{ interface }}
+        lxc.network.flags = up
+        lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+  - copy:
+      dest: /etc/sysconfig/lxc-net
+      content: |
+        LXC_BRIDGE= {{ interface }}
+        LXC_BRIDGE_MAC="00:16:3e:00:00:00"
+        LXC_ADDR="10.0.3.1"
+        LXC_NETMASK="255.255.255.0"
+        LXC_NETWORK="10.0.3.0/24"
+        LXC_DHCP_RANGE="10.0.3.2,10.0.3.254"
+        LXC_DHCP_MAX="253"
+        LXC_DHCP_CONFILE=""
+        LXC_DHCP_PING="true"
+        LXC_DOMAIN=""
+        LXC_IPV6_ADDR=""
+        LXC_IPV6_MASK=""
+        LXC_IPV6_NETWORK=""
+        LXC_IPV6_NAT="false"
+
+# start lxc network bridge with systemd
+  - name: start lxc-net service
+    systemd:
+      state: started
+      name: lxc-net
+
+# workaround for cgroups v2 - switch back to cgoups v1
+# https://ask.fedoraproject.org/t/lxc-problems-after-upgrade-to-31/3874/4
+  - name: modiy kernel to use cgoups v1
+    shell: grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+
+# set selinux to permissiv mode REQUIRED!!!
+  - name: disable selinux
+    shell: setenforce 0

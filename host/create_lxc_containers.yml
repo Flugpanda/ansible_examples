@@ -2,8 +2,9 @@
   connection: local
   become: yes
   tasks:
+
 ###
-# lxc-containers is still broken
+# ansible lxc-containers module is still broken !!!
 ###
 # crete container
 #- name: Create web container
@@ -12,6 +13,10 @@
 #      container_log: false
 #      template: ubuntu
 #      state: stopped
+
+####################
+## LXC Container
+####################
 
 # creat container web1 maually
     - name: setup web1 container manually
@@ -24,3 +29,45 @@
 # create container db1 maually
     - name: setup db1 container manually
       shell: lxc-create --template download --name db1 -- --dist centos --release 8 --arch amd64
+
+####################
+## SSH Keys
+####################
+
+# add ssh key to web1
+    - name: web1 create .ssh
+      shell: lxc-attach -n web1 -- mkdir -p /root/.ssh
+      shell: lxc-attach -n web1 -- chmod 700 /root/.ssh
+      shell: cat demo_key.pub | lxc-attach -n web1 -- tee -a /root/.ssh/authorized_keys
+      shell: lxc-attach -n web1 -- chmod 644 .ssh/authorized_keys
+
+# add ssh key to web2
+    - name: web2 create .ssh
+      shell: lxc-attach -n web2 -- mkdir -p /root/.ssh
+      shell: lxc-attach -n web2 -- chmod 700 /root/.ssh
+      shell: cat demo_key.pub | lxc-attach -n web2 -- tee -a /root/.ssh/authorized_keys
+      shell: lxc-attach -n web2 -- chmod 644 .ssh/authorized_keys
+
+# add ssh key to db1
+    - name: db1 create .ssh
+      shell: lxc-attach -n db1 -- mkdir -p /root/.ssh
+      shell: lxc-attach -n db1 -- chmod 700 /root/.ssh
+      shell: cat demo_key.pub | lxc-attach -n db1 -- tee -a /root/.ssh/authorized_keys
+      shell: lxc-attach -n db1 -- chmod 644 .ssh/authorized_keys  
+
+####################
+## SSH Server
+####################
+
+# intall ssh on containers
+    - name: web1 install openssh
+      shell: lxc-attach -n web1 -- yum -y install openssh-server
+      shell: lxc-attach -n web1 -- systemctl enable sshd
+
+    - name: web2 install openssh
+      shell: lxc-attach -n web2 -- yum -y install openssh-server 
+      shell: lxc-attach -n web2 -- systemctl enable sshd 
+
+    - name: db1 install openssh
+      shell: lxc-attach -n db1 -- yum -y install openssh-server
+      shell: lxc-attach -n db1 -- systemctl enable sshd 

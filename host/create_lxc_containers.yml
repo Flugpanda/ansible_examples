@@ -1,0 +1,26 @@
+- hosts: 127.0.0.1
+  connection: local
+  become: yes
+  tasks:
+###
+# lxc-containers is still broken
+###
+# crete container
+#- name: Create web container
+#    lxc_container:
+#      name: web1
+#      container_log: false
+#      template: ubuntu
+#      state: stopped
+
+# creat container web1 maually
+    - name: setup web1 container manually
+      shell: lxc-create --template download --name web1 -- --dist centos --release 8 --arch amd64
+
+# create container web2 maually
+    - name: setup web2 container manually
+      shell: lxc-create --template download --name web2 -- --dist centos --release 8 --arch amd64
+
+# create container db1 maually
+    - name: setup db1 container manually
+      shell: lxc-create --template download --name db1 -- --dist centos --release 8 --arch amd64

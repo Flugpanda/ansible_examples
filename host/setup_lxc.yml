@@ -1,0 +1,15 @@
+- hosts: 127.0.0.1
+  connection: local
+
+# install lxc packages
+  tasks:  
+  - name: install lxc packages
+    yum:
+      name: lxc, lxc-extra, lxc-templates
+      state: latest
+
+# install pip for python management
+  - name: install pip
+    yum:
+      name: pip, python-setuptools, python3-virtualenv, python3-lxc
+      state: latest

@@ -38,11 +38,15 @@
 # configure LCX bridge
   - copy:
       dest: /etc/lxc/default.conf
-      content: |
-        lxc.network.type = veth
-        lxc.network.link = {{ interface }}
-        lxc.network.flags = up
-        lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+      content: |                                                                        
+        lxc.net.0.type = veth
+        lxc.net.0.link = {{ interface }}
+        lxc.net.0.flags = up
+        lxc.net.0.hwaddr = 00:16:3e:xx:xx:xx
+#        lxc.network.type = veth
+#        lxc.network.link = {{ interface }}
+#        lxc.network.flags = up
+#        lxc.network.hwaddr = 00:16:3e:xx:xx:xx
   - copy:
       dest: /etc/sysconfig/lxc-net
       content: |

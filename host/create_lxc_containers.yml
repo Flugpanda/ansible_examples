@@ -1,6 +1,8 @@
 - hosts: 127.0.0.1
   connection: local
+  gather_facts: false
   become: yes
+  
   tasks:
 
 ###
@@ -65,7 +67,7 @@
       shell: lxc-attach -n web1 -- systemctl enable sshd
 
     - name: web2 install openssh
-      shell: lxc-attach -n web2 -- yum -y install openssh-server 
+      shell: lxc-attach -n web2 -- yum -y install openssh-server
       shell: lxc-attach -n web2 -- systemctl enable sshd 
 
     - name: db1 install openssh

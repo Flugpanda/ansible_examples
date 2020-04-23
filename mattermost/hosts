@@ -6,8 +6,8 @@
 [mattermost]
 10.0.3.106
 
-[web]
+[webserver]
 10.0.3.124
 
-[database]
+[dbserver]
 10.0.3.107

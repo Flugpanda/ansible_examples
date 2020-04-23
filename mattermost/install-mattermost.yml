@@ -1,0 +1,14 @@
+---
+- name: Database Setup
+  hosts: dbserver
+  remote_user: root
+  roles:
+    - common
+    - matterdb
+
+- name: Webserver Setup
+  hosts: webserver
+  remote_user: root
+  roles:
+    - common
+#    - matterweb

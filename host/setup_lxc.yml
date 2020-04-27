@@ -4,15 +4,15 @@
   vars:
     - interface: lxcbr0
 
-# Make sure dnsmasq is installed
   tasks:  
+
+# Make sure dnsmasq is installed
   - name: install dnsmasq
     yum:
       name: dnsmasq
       state: latest
 
 # install lxc packages
-  tasks:  
   - name: install lxc packages
     yum:
       name: lxc, lxc-extra, lxc-templates

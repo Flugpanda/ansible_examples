@@ -1,0 +1,42 @@
+---
+- name: test play
+  hosts: 127.0.0.1
+  connection: local
+
+# This demonstrates how eror handling in ansible is working
+# like in every modern programming language.
+#
+# In esence this resembles the ansible version of
+#   try{...}
+#   catch(){...}
+#   finaly{...}
+  tasks:
+
+  - name: Attempt and graceful roll back demo
+    block:
+      - name: TRY - Download file
+        get_url:
+          url: http://example.com/path/file.conf
+          dest: ./foo.conf
+        register: downloaded_file
+      - debug:
+          msg: 'I never execute, due to the above task failing, :-('
+
+    rescue:
+      - name: CATCH - Handle the error
+        file:
+          path: ./foo.conf
+          state: touch
+      - debug:
+          msg: "{{ downloaded_file.response }}"
+
+      - name: CATCH - cause another error  
+        command: /bin/false
+      - debug:
+          msg: 'I also never execute :-('
+
+    always:
+      - debug:
+          msg: "FINALY - This always executes :)"
+
+...

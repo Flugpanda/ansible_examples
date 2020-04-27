@@ -1,0 +1,17 @@
+---
+
+- name: Provisioning container
+  hosts: all
+  gather_facts: False
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - provisioning
+
+- name: Setup
+  hosts: all
+  remote_user: root
+  roles:
+    - common

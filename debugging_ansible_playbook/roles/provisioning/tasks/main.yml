@@ -1,0 +1,35 @@
+---
+  - name: debug start
+    debug: msg="Start debugging the provisioning"
+
+  - name: install python
+    package:
+      name: python2
+      state: present
+   
+  - name: add ssh key for root user
+    authorized_key: user=root
+                    exclusive=no
+                    key="{{ lookup('file', '~/Projects/ansible/host/demo_key.pub') }}"
+
+  - name: COMMON | Set environment
+    blockinfile:
+      dest: /etc/environment
+      block: |
+        LC_ALL=de_DE.UTF-8
+        LANG=de_DE.UTF-8
+    register: newenv
+
+## debugging example with variables
+
+  - shell: cat /etc/os-release
+    register: release
+
+  - shell: /usr/bin/uptime
+    register: uptime
+
+  - name: debugging with variables
+    debug: var=release
+
+  - name: debugging with verbosity -> only output when the -v flag ist set
+    debug: var=uptime verbosity=1

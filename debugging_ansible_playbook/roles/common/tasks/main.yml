@@ -1,0 +1,10 @@
+---
+- name: debug start
+  debug: msg="Start debugging the common setup"
+
+- name: COMMON | Install basic packages
+  package: name={{ item }} state=present
+  with_items:
+    - wget
+    - nano
+    - curl

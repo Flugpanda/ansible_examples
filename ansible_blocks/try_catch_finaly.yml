@@ -36,7 +36,21 @@
           msg: 'I also never execute :-('
 
     always:
-      - debug:
+      - name: FIANLY
+        debug:
           msg: "FINALY - This always executes :)"
+
+# after a lock was run, none of the following code will be executed
+# it looks like one task can only have one block
+#
+# therefore a new task has zu be created
+  tasks:
+  - debug:
+      msg: "Block ended"
+
+  - name: Clean up before close
+    file:
+      path: ./foo.conf
+      state: absent
 
 ...

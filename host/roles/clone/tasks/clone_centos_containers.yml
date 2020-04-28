@@ -1,0 +1,14 @@
+---
+- name: Create a clone [centos2] of an existing centos1 container
+  lxc_container:
+    name: centos1
+    backing_store: dir
+    clone_name: centos2
+    state: stopped
+
+- name: Create a clone [centos3] of an existing centos1 container
+  lxc_container:
+    name: centos1
+    backing_store: dir
+    clone_name: centos3
+    state: stopped

@@ -1,0 +1,14 @@
+---
+- name: Create a clone [ubuntu2] of an existing ubuntu1 container
+  lxc_container:
+    name: ubuntu1
+    backing_store: dir
+    clone_name: ubuntu2
+    state: stopped
+
+- name: Create a clone [ubuntu2] of an existing ubuntu1 container
+  lxc_container:
+    name: ubuntu1
+    backing_store: dir
+    clone_name: ubuntu3
+    state: stopped

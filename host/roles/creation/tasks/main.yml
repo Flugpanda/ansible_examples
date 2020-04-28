@@ -1,0 +1,16 @@
+---
+  - name: Create a Centos 8 Container
+    lxc_container:
+      name: centos1
+      container_log: false
+      template: download
+      state: stopped
+      template_options: --dist centos --release 8 --arch amd64
+
+  - name: Create an Ubuntu 20.4 Container
+    lxc_container:
+      name: ubuntu1
+      container_log: false
+      template: download
+      state: stopped
+      template_options: --dist ubuntu --release focal --arch amd64

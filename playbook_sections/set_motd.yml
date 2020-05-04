@@ -1,0 +1,29 @@
+---
+# YAML documents begin with the document separator ---
+
+# The minus in YAML this indicates a list item.  The playbook contains a list
+# of plays, with each play being a dictionary
+-
+
+  # Target: where our play will run and options it will run with
+  hosts: centos
+
+  # Task: the list of tasks that will be executed within the play, this section
+  # can also be used for pre and post tasks
+  tasks:
+    - name: copy the message of the day to the hosts
+      copy:
+        src: centos_motd
+        dest: /etc/motd
+      notify: MOTD changed
+
+
+  # Handlers: handlers that are executed as a notify key from a task
+  handlers:
+    - name: MOTD changed
+      debug:
+        msg: Message of the day was changed
+
+  # Roles: list of roles to be imported into the play
+
+...

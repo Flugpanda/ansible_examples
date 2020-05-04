@@ -1,0 +1,13 @@
+---
+- hosts: controller
+  gather_facts: false
+  become: yes
+  
+  tasks:
+
+  - include_tasks: roles/setup_ssh/tasks/ssh.yml
+    with_items: "{{ groups['worker'] }}"
+    loop_control:
+      loop_var: current_host
+
+...

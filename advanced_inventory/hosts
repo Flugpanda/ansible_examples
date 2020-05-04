@@ -1,0 +1,26 @@
+[control]
+controller ansible_connection=local
+
+[control:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[centos]
+centos1 ansible_host=10.0.3.91
+centos2 ansible_host=10.0.3.212
+centos3 ansible_host=10.0.3.221
+
+[ubuntu]
+ubuntu1 ansible_host=10.0.3.217
+ubuntu2 ansible_host=10.0.3.194
+ubuntu3 ansible_host=10.0.3.156
+
+
+
+[worker:children]
+centos
+ubuntu
+
+[worker:vars]
+ansible_user=worker
+ansible_become=true
+ansible_become_pass=gofix

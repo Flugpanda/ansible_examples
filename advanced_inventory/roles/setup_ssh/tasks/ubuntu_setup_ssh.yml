@@ -1,0 +1,35 @@
+---
+####################
+## SSH Server
+####################
+
+- name: Is check openssh-server installed
+  shell: "lxc-attach -n {{ current_host }} -- dpkg -l | cut -d ' ' -f 3 | grep '^openssh-server'"
+  ignore_errors: yes
+  register: servercheck
+
+- debug: 
+    msg: "{{ current_host }} - openssh-server state - {{ servercheck.stdout }}"
+    verbosity: 1
+
+- debug:
+   msg: "Provisioning based on [servercheck.stdout] which is: {{ servercheck.stdout == '' }}"
+   verbosity: 2
+
+#intall ssh on containers
+- name: update chache
+  shell: lxc-attach -n {{ current_host }} -- apt-get update
+  when: servercheck.stdout == ""
+
+- name: install opennsssh-server
+  shell: lxc-attach -n {{ current_host }} -- apt-get install -y openssh-server
+  when: servercheck.stdout == ""
+
+- name: enable ssh service
+  shell: lxc-attach -n {{ current_host }} -- systemctl enable ssh
+  when: servercheck.stdout == ""
+
+- name: start ssh service
+  shell: lxc-attach -n {{ current_host }} -- systemctl start ssh
+  when: servercheck.stdout == ""
+...

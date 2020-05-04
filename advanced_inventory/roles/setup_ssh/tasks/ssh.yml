@@ -1,0 +1,12 @@
+---
+
+# - include_tasks: centos_setup_ssh.yml
+#   when: "current_host in groups['centos']"
+
+# - include_tasks: ubuntu_setup_ssh.yml
+#   when: "current_host in groups['ubuntu']"
+
+- include_tasks: create_ssh_user.yml
+# - include_tasks: add_ssh_key.yml
+
+...

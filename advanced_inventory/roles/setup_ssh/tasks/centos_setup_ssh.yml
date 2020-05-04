@@ -1,0 +1,30 @@
+---
+####################
+## SSH Server
+####################
+
+- name: Is check openssh-server installed
+  shell: "lxc-attach -n {{ current_host }} -- rpm -q openssh-server"
+  register: servercheck
+
+- debug: 
+    msg: "{{ current_host }} - openssh-server state - {{ servercheck }}"
+    verbosity: 1
+
+- debug:
+   msg: "Provisioning based on YOUR_KEY which is: {{ 'openssh-server' in servercheck.stdout }}"
+   verbosity: 2
+
+#intall ssh on containers
+- name: install opennsssh-server
+  shell: lxc-attach -n {{ current_host }} -- yum --refresh install  openssh-server -y
+  when: '"openssh-server" not in servercheck.stdout'
+
+- name: enable ssh service
+  shell: lxc-attach -n {{ current_host }} -- systemctl enable sshd
+  when: '"openssh-server" not in servercheck.stdout'
+
+- name: start ssh service
+  shell: lxc-attach -n {{ current_host }} -- systemctl start sshd
+  when: '"openssh-server" not in servercheck.stdout'
+...

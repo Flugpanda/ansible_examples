@@ -1,0 +1,47 @@
+---
+# create user
+- name: test if user is present
+  shell: lxc-attach -n {{ current_host }} -- cat /etc/passwd | cut -d ':' -f 1 | grep {{ worker_user }}
+  ignore_errors: yes
+  register: worker_is_pressend
+
+- debug:
+    msg: "worker_is_pressend is: {{worker_is_pressend}}"
+    verbosity: 1
+
+- debug:
+   msg: "Provisioning based on [worker_is_pressend.stdout] which is: {{ worker_user not in worker_is_pressend.stdout}}"
+   verbosity: 2
+
+- name: create ssh user
+  shell: lxc-attach -n {{ current_host }} -- useradd -m -d {{ worker_home }} -s /bin/bash {{ worker_user }} 
+  when: "worker_user not in worker_is_pressend.stdout"
+
+- name: set password
+  shell: "lxc-attach -n {{ current_host }} -- echo {{ worker_pass }}:{{ worker_user }} | chpasswd"
+  when: "worker_user not in worker_is_pressend.stdout"
+
+# create ssh key folder
+- name: create ssh dir
+  shell: lxc-attach -n {{ current_host }} -- mkdir -p {{ worker_home }}/.ssh
+  when: "worker_user not in worker_is_pressend.stdout"
+
+# # copy over the ssh key
+- name: copy over the key
+  shell: cat {{ansible_ssh_private_key_file}}.pub | lxc-attach -n {{ current_host }} -- tee -a {{ worker_home }}/.ssh/authorized_keys
+  # when: "worker_user not in worker_is_pressend.stdout"
+
+# change persissions to the ssh folder and key      
+- name: change dir permission
+  shell: lxc-attach -n {{ current_host }} -- chmod 700 {{ worker_home }}/.ssh
+  when: "worker_user not in worker_is_pressend.stdout"
+
+- name: change permissions of the key
+  shell: lxc-attach -n {{ current_host }} -- chmod 644 {{ worker_home }}/.ssh/authorized_keys
+  # when: "worker_user not in worker_is_pressend.stdout"
+
+- name: change owndership of home folder
+  shell: "lxc-attach -n {{ current_host }} -- chown -R {{ worker_user }}:{{ worker_user }} {{ worker_home }}"
+  # when: "worker_user not in worker_is_pressend.stdout"
+
+...

@@ -17,7 +17,7 @@
 
 #intall ssh on containers
 - name: install opennsssh-server
-  shell: lxc-attach -n {{ current_host }} -- yum --refresh install  openssh-server -y
+  shell: lxc-attach -n {{ current_host }} -- yum --refresh install sudo openssh-server -y
   when: '"openssh-server" not in servercheck.stdout'
 
 - name: enable ssh service

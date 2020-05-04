@@ -8,4 +8,8 @@
   shell: "lxc-attach -n {{ current_host }} -- echo {{ worker_pass }}:{{ worker_user }} | chpasswd"
   when: "worker_user not in worker_is_pressend.stdout"
 
+- name: add user to group wheel for privilege escalation
+  shell: "lxc-attach -n {{ current_host }} -- usermod -aG sudo {{ worker_user }}"
+  when: "worker_user not in worker_is_pressend.stdout"
+
 ...

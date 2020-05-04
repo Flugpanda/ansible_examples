@@ -1,12 +1,26 @@
 ---
 
-# - include_tasks: centos_setup_ssh.yml
-#   when: "current_host in groups['centos']"
+- include_tasks: centos_setup_ssh.yml
+  when: "current_host in groups['centos']"
 
-# - include_tasks: ubuntu_setup_ssh.yml
-#   when: "current_host in groups['ubuntu']"
+- include_tasks: ubuntu_setup_ssh.yml
+  when: "current_host in groups['ubuntu']"
+
+# test if ssh user is already present
+- name: test if user is present
+  shell: lxc-attach -n {{ current_host }} -- cat /etc/passwd | cut -d ':' -f 1 | grep {{ worker_user }}
+  ignore_errors: yes
+  register: worker_is_pressend
+
+- debug:
+    msg: "worker_is_pressend is: {{worker_is_pressend}}"
+    verbosity: 1
+
+- debug:
+   msg: "Provisioning based on [worker_is_pressend.stdout] which is: {{ worker_user not in worker_is_pressend.stdout}}"
+   verbosity: 2
 
 - include_tasks: create_ssh_user.yml
-# - include_tasks: add_ssh_key.yml
+- include_tasks: add_ssh_key.yml
 
 ...

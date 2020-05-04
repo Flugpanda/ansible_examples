@@ -1,0 +1,26 @@
+---
+
+# create ssh key folder
+- name: create ssh dir
+  shell: lxc-attach -n {{ current_host }} -- mkdir -p {{ worker_home }}/.ssh
+  when: "worker_user not in worker_is_pressend.stdout"
+
+# # copy over the ssh key
+- name: copy over the key
+  shell: cat {{ansible_ssh_private_key_file}}.pub | lxc-attach -n {{ current_host }} -- tee -a {{ worker_home }}/.ssh/authorized_keys
+  when: "worker_user not in worker_is_pressend.stdout"
+
+# change persissions to the ssh folder and key      
+- name: change dir permission
+  shell: lxc-attach -n {{ current_host }} -- chmod 700 {{ worker_home }}/.ssh
+  when: "worker_user not in worker_is_pressend.stdout"
+
+- name: change permissions of the key
+  shell: lxc-attach -n {{ current_host }} -- chmod 644 {{ worker_home }}/.ssh/authorized_keys
+  when: "worker_user not in worker_is_pressend.stdout"
+
+- name: change owndership of home folder
+  shell: "lxc-attach -n {{ current_host }} -- chown -R {{ worker_user }}:{{ worker_user }} {{ worker_home }}"
+  when: "worker_user not in worker_is_pressend.stdout"
+
+  ...

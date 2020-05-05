@@ -1,0 +1,15 @@
+
+---
+# Setup java
+- name: Install OpenJdk.
+  package: name={{ item }} state=present
+  with_items: "{{ java_packages }}"
+
+# Setup jvm 
+# is better to use a file to make this global
+# https://stackoverflow.com/questions/27733511/how-to-set-linux-environment-variables-with-ansible
+- name: Copy Java Home Script
+  template: src=set_java_home.sh dest=/etc/profile.d
+
+- name: Set Java Home Script
+  shell: source /etc/profile.d/set_java_home.sh

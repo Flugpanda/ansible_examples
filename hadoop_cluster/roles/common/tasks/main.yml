@@ -1,0 +1,9 @@
+---
+- name: COMMON | Install basic packages
+  package: name={{ item }} state=present
+  with_items:
+    - wget
+    - nano
+    - curl
+
+- include_tasks: create_folders.yml

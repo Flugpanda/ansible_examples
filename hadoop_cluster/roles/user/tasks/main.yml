@@ -1,0 +1,6 @@
+---
+# Create a user to run hadoop
+- name: Add the user {{ hadoop_user }}
+  user:
+    name: "{{ hadoop_user }}"
+    comment: User for running the hadoop

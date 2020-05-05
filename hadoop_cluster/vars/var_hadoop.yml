@@ -1,0 +1,16 @@
+---
+hadoop_version: "3.2.1" 
+hadoop_download_url: https://ftp.fau.de/apache/hadoop/common/hadoop-{{hadoop_version}}/hadoop-{{hadoop_version}}.tar.gz
+
+hadoop_path: "/home/{{hadoop_user}}" # default in user "hadoop" home
+hadoop_config_path: "/home/{{hadoop_user}}/hadoop-{{hadoop_version}}/etc/hadoop"
+hadoop_tmp: "{{hadoop_path}}/tmp"
+hadoop_dfs_name: "{{hadoop_path}}/dfs/name"
+hadoop_dfs_data: "{{hadoop_path}}/dfs/data"
+hadoop_log_path: "{{hadoop_path}}/hadoop_logs"
+
+hadoop_paths_to_create:
+  - "{{ hadoop_tmp }}"
+  - "{{ hadoop_dfs_name }}"
+  - "{{ hadoop_dfs_data }}"
+  - "{{ hadoop_log_path }}"

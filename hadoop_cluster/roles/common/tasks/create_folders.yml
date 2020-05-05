@@ -1,0 +1,18 @@
+---
+
+# Create Download folders for hadoop
+- name: Creates Download directory | {{worker_download}}
+  file:
+    path: "{{worker_download}}"
+    owner: "{{worker_user}}"
+    group: "{{worker_user}}"
+    state: directory
+
+# Create the hadoop folders
+- name: Create the hadoop folders to work with
+  file:
+    path: "{{item}}"
+    owner: "{{hadoop_user}}"
+    group: "{{hadoop_user}}"
+    state: directory
+  loop: "{{hadoop_paths_to_create}}"

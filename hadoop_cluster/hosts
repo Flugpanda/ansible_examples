@@ -1,0 +1,22 @@
+[control]
+controller ansible_connection=local
+
+[control:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[master]
+master ansible_host=10.0.3.186
+
+[nodes]
+node1 ansible_host=10.0.3.219
+node2 ansible_host=10.0.3.72
+node3 ansible_host=10.0.3.129
+
+[cluster:children]
+master
+nodes
+
+[cluster:vars]
+ansible_user={{worker_user}}
+ansible_become=true
+#ansible_become_method=sudo

@@ -1,0 +1,10 @@
+- hosts: master
+  vars_files:
+   - vars/var_java.yml
+   - vars/var_worker.yml
+   - vars/var_hadoop.yml
+
+  roles:
+    - user
+    - common
+    - java

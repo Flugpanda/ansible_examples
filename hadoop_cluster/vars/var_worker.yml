@@ -1,0 +1,6 @@
+---
+####################################################
+# worker User:
+####################################################
+worker_home: /home/{{worker_user}}
+worker_download: "{{worker_home}}/Downloads"

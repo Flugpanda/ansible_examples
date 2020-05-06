@@ -1,7 +1,10 @@
 ---
+## Hadoop
 hadoop_version: "3.2.1" 
 hadoop_download_url: https://ftp.fau.de/apache/hadoop/common/hadoop-{{hadoop_version}}/hadoop-{{hadoop_version}}.tar.gz
 
+
+## Hadoop - Paths
 hadoop_path: "/home/{{hadoop_user}}" # default in user "hadoop" home
 hadoop_config_path: "/home/{{hadoop_user}}/hadoop-{{hadoop_version}}/etc/hadoop"
 hadoop_tmp: "{{hadoop_path}}/tmp"
@@ -14,3 +17,27 @@ hadoop_paths_to_create:
   - "{{ hadoop_dfs_name }}"
   - "{{ hadoop_dfs_data }}"
   - "{{ hadoop_log_path }}"
+
+
+## Hadoop - Ports
+yarn_resourcemanager_port: 8040
+yarn_resourcemanager_scheduler_port: 8030
+yarn_resourcemanager_webapp_port: 8088
+yarn_resourcemanager_tracker_port: 8025
+yarn_resourcemanager_admin_port: 8141
+dfs_namenode_httpport: 9001
+hdfs_port: 9000
+dashbord_port: 9870
+
+firewall_ports:
+  - "{{ dashbord_port}}"
+  - "{{ hdfs_port }}"
+  - "{{ dfs_namenode_httpport }}"
+  - "{{ yarn_resourcemanager_port }}"
+  - "{{ yarn_resourcemanager_scheduler_port }}"
+  - "{{ yarn_resourcemanager_webapp_port }}"
+  - "{{ yarn_resourcemanager_tracker_port }}"
+  - "{{ yarn_resourcemanager_admin_port }}"
+
+
+## Hadoop - Configuration

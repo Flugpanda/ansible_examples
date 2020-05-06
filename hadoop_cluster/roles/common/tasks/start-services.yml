@@ -1,0 +1,6 @@
+---
+- name: Make sure firewalld is running
+  systemd:
+    state: started
+    name: firewalld
+  when: open_firewall

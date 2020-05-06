@@ -6,6 +6,7 @@
   vars:
     add_user: true           # add user "hadoop"
     install_hadoop: true     # install hadoop,if you just want to update the configuration, set to false
+    open_firewall: true      # configure firewalld for hadooop
   roles:
     - user
     - common

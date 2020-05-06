@@ -6,5 +6,9 @@
     - nano
     - curl
     - tar
+    - firewalld
+    - python3-firewall
 
 - include_tasks: create_folders.yml
+
+- include_tasks: start-services.yml

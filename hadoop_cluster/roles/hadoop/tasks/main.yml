@@ -10,8 +10,14 @@
     path: "{{hadoop_path}}//hadoop-{{hadoop_version}}"
   register: hadoop_version_installed
 
+# Install
 - include: install_hadoop.yml
   when: install_hadoop
 
+# Configure
 # - include: config_hadoop.yml
 #   when: config_hadoop
+
+# Firewall
+- include: config_firewall.yml
+  when: open_firewall

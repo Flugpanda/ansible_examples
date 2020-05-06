@@ -5,5 +5,6 @@
     - wget
     - nano
     - curl
+    - tar
 
 - include_tasks: create_folders.yml

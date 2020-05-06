@@ -1,0 +1,17 @@
+---
+# Checks
+- name: check if hadoop version was already downloaded
+  stat:
+    path: "{{worker_download}}/hadoop-{{hadoop_version}}.tar.gz"
+  register: hadoop_version_downloaded
+
+- name: check if hadoop version is installed
+  stat:
+    path: "{{hadoop_path}}//hadoop-{{hadoop_version}}"
+  register: hadoop_version_installed
+
+- include: install_hadoop.yml
+  when: install_hadoop
+
+# - include: config_hadoop.yml
+#   when: config_hadoop

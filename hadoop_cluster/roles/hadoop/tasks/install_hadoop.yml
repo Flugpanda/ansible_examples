@@ -1,0 +1,27 @@
+---
+# - name: Download and unarchive hadoop in one go
+#   unarchive:
+#     src: "{{hadoop_download_url}}"
+#     dest: "{{hadoop_path}}"
+#     remote_src: yes
+#     mode: '0755'
+
+- name: Download hadoop
+  get_url:
+    url: "{{hadoop_download_url}}"
+    dest: "{{worker_download}}"
+  when: not hadoop_version_downloaded.stat.exists
+
+- name: Extract hadoop version {{hadoop_version}}
+  unarchive:
+    src: "{{worker_download}}/hadoop-{{hadoop_version}}.tar.gz"
+    dest: "{{hadoop_path}}"
+    remote_src: yes
+  when: not hadoop_version_installed.stat.exists
+
+- name: Change ownership, group and permissions of hadoop
+  file:
+    path: "{{hadoop_path}}"
+    owner: "{{hadoop_user}}"
+    group: "{{hadoop_user}}"
+    mode: '0755'

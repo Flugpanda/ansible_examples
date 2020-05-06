@@ -4,3 +4,4 @@
   user:
     name: "{{ hadoop_user }}"
     comment: User for running the hadoop
+  when: add_user

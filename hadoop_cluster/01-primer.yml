@@ -3,8 +3,11 @@
    - vars/var_java.yml
    - vars/var_worker.yml
    - vars/var_hadoop.yml
-
+  vars:
+    add_user: true           # add user "hadoop"
+    install_hadoop: true     # install hadoop,if you just want to update the configuration, set to false
   roles:
     - user
     - common
     - java
+    - hadoop

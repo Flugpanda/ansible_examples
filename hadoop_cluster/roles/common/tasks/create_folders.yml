@@ -9,10 +9,12 @@
     state: directory
 
 # Create the hadoop folders
-- name: Create the hadoop folders to work with
-  file:
-    path: "{{item}}"
-    owner: "{{hadoop_user}}"
-    group: "{{hadoop_user}}"
+- name: Create Hadoop Pathts
+  file: 
+    path: "{{ item }}"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
     state: directory
-  loop: "{{hadoop_paths_to_create}}"
+    mode: '0755'
+  with_items:
+    - "{{ hadoop_paths_to_create }}"

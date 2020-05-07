@@ -1,0 +1,5 @@
+---
+- name: Add Hadoop Public Key 
+  authorized_key: 
+    user: "{{ hadoop_user }}"
+    key: "{{ lookup('file', '/tmp/id_{{master_ip}}_{{hadoop_user}}.pub') }}"

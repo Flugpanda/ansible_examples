@@ -8,4 +8,5 @@
     immediate: yes
   with_items:
     - '{{firewall_ports}}'
+  when: open_firewall
   ignore_errors: true

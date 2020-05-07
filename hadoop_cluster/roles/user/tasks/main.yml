@@ -4,4 +4,21 @@
   user:
     name: "{{ hadoop_user }}"
     comment: User for running the hadoop
+    shell: /bin/bash
+    append: yes
   when: add_user
+
+# check if the hadoop user has a public key
+- name: Check Public Key
+  shell: "ls /home/{{ hadoop_user }}/.ssh|grep '.pub' |wc -l"
+  register: key_exist
+  ignore_errors: true
+
+# generate a keypair if none exists
+- name: Generate Public key
+  user:
+    name: "{{ hadoop_user }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+  when: "key_exist.stdout == '0' and generate_key"

@@ -1,19 +1,24 @@
 ---
+# Common Config
 - name: Copy Hadoop core-site.xml
-  template: src=core-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ user }} group = {{ group }}
+  template: src=core-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ hadoop_user }} group = {{ hadoop_user }}
 
 - name: Copy Hadoop hdfs-site.xml
-  template: src=hdfs-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ user }} group = {{ group }}
+  template: src=hdfs-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ hadoop_user }} group = {{ hadoop_user }}
 
 - name: Copy Hadoop mapred-site.xml
-  template: src=mapred-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ user }} group = {{ group }}
+  template: src=mapred-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ hadoop_user }} group = {{ hadoop_user }}
 
 - name: Copy Hadoop yarn-site.xml
-  template: src=yarn-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ user }} group = {{ group }}
+  template: src=yarn-site.xml dest={{ hadoop_config_path }} mode=644 owner={{ hadoop_user }} group = {{ hadoop_user }}
 
-- name: Copy Hadoop workers
-  template: src=workers dest={{ hadoop_config_path }} mode=644 owner={{ user }} group = {{ group }}
 
+# Nodes
+- name: Copy Hadoop Nodes
+  template: src=nodes dest={{ hadoop_config_path }} mode=644 owner={{ hadoop_user }} group = {{ hadoop_user }}
+
+
+# environment variables
 - name: Copy Hadoop Env Script
   template: src=hadoop_env.sh dest=/etc/profile.d/ mode=755
 

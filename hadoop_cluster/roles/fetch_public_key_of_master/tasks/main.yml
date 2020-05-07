@@ -1,0 +1,6 @@
+---
+- name: Get Lastest Public From Hadoop Master
+  fetch: 
+    src: /home/{{ hadoop_user }}/.ssh/id_rsa.pub
+    dest: /tmp/id_{{ ansible_host }}_{{ hadoop_user }}.pub
+    flat: yes

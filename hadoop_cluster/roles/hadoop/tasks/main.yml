@@ -15,9 +15,9 @@
   when: install_hadoop
 
 # Configure
-# - include: config_hadoop.yml
-#   when: config_hadoop
+- include: config_hadoop.yml
+  when: config_hadoop
 
 # Firewall
 - include: config_firewall.yml
-  when: open_firewall
+  when: not disable_firewall

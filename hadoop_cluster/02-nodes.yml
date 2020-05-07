@@ -1,0 +1,30 @@
+# Add Master Public Key   # get master ssh public key 
+- hosts: master 
+  remote_user: root
+  vars_files:
+   - vars/var_worker.yml
+   - vars/var_hadoop.yml
+   - vars/var_nodes.yml
+  roles:
+    - fetch_public_key_of_master
+
+
+- hosts: nodes
+  vars_files:
+   - vars/var_java.yml
+   - vars/var_worker.yml
+   - vars/var_hadoop.yml
+   - vars/var_nodes.yml
+  vars:
+    add_user: true           # add user "hadoop"
+    generate_key: false      # workers just use master ssh public key
+    open_firewall: false     # configure firewalld for hadooop
+    disable_firewall: true   # disable firewalld
+    install_hadoop: true     # install hadoop,if you just want to update the configuration, set to false
+    config_hadoop: true      # Update configuration
+  roles:
+    - user
+    - authorized
+    - common
+    - java
+    - hadoop

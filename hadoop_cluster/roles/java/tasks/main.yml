@@ -7,10 +7,23 @@
 # Set JAVA_HOME environment variable
 # It's better to use a file to make this global
 # https://stackoverflow.com/questions/27733511/how-to-set-linux-environment-variables-with-ansible
+#
+# BUT
+# This method apllies only for users with a login shell
+# https://askubuntu.com/questions/247738/why-is-etc-profile-not-invoked-for-non-login-shells?answertab=votes#tab-top
 - name: Copy Java Home Script
   template: src=set_java_home.sh dest=/etc/profile.d mode=755
 
 - name: Set Java Home Script
   shell: source /etc/profile.d/set_java_home.sh
-  become: yes
-  become_user: "{{hadoop_user}}"
+
+- name: get JVM Version
+  shell: (ls -al {{jvm_home}}|grep "^d"|grep "java"|awk '{print$NF}')
+  register: jdk_version
+
+# set environment variable to hadoop user without a login shell 
+- name: set JAVA_HOME environment to {{hadoop_user}} .bashrc
+  lineinfile:
+    path: /home/{{hadoop_user}}/.bashrc
+    regexp: '^JAVA_HOME='
+    line: export JAVA_HOME={{ jvm_home }}/{{jdk_version.stdout}}

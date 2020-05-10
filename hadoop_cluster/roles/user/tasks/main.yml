@@ -26,3 +26,27 @@
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
   when: "key_exist.stdout == '0' and generate_key"
+
+# test if environment variables are already set
+- name: test env variables in {{badoop_user}} .bashrc
+  command: grep -Fxq "export HADOOP_INSTALL=$HADOOP_HOME" /home/{{hadoop_user}}/.bashrc
+  register: envisset
+  check_mode: no
+  ignore_errors: yes
+  changed_when: no
+
+# add environment variables
+- name: Set hadoop env variables to {{badoop_user}} .bashrc
+  blockinfile:
+    path: /home/{{hadoop_user}}/.bashrc
+    block: |
+      export HADOOP_HOME=/home/{{hadoop_user}}/hadoop
+      export HADOOP_INSTALL=$HADOOP_HOME
+      export HADOOP_MAPRED_HOME=$HADOOP_HOME
+      export HADOOP_COMMON_HOME=$HADOOP_HOME
+      export HADOOP_HDFS_HOME=$HADOOP_HOME
+      export HADOOP_YARN_HOME=$HADOOP_HOME
+      export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+      export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+      export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
+  when: envisset.rc != 0

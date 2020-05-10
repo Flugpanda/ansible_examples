@@ -13,8 +13,8 @@
     config_hadoop: true      # Update configuration
   roles:
     - common                            # install common packages
-    - java                              # install jdk 
     - user                              # add user and generate the ssh key
+    - java                              # install jdk 
     - fetch_public_key_of_master        # get the key and put it in your localhost
     - authorized                        # push the ssh key to the remote server 
     - hadoop                            # install hadoop

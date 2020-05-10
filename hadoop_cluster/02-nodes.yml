@@ -1,4 +1,3 @@
-# Add Master Public Key   # get master ssh public key 
 - hosts: master 
   remote_user: root
   vars_files:

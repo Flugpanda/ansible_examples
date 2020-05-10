@@ -1,0 +1,15 @@
+- hosts: hive
+  remote_user: root
+  vars_files:
+   - vars/var_worker.yml
+   - vars/var_master.yml
+   - vars/var_hive.yml
+  vars:
+     disable_firewall: false
+     open_firewall: true           
+     install_hive: true           
+     config_hive: true
+     init_hive: true               # init hive database after install and config
+  roles:
+    - common
+    - hive

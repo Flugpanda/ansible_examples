@@ -24,3 +24,5 @@
 
 - name: Set Hadoop Env
   shell: source /etc/profile.d/hadoop_env.sh
+  become: yes
+  become_user: "{{hadoop_user}}"

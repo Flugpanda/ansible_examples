@@ -1,0 +1,37 @@
+---
+- name: Create Hive Path
+  file: 
+    path: "{{ item }}"
+    owner: "{{ hadoop_user }}"
+    group: "{{ hadoop_user }}"
+    state: directory
+    mode: "0755"
+  with_items:
+    - "{{ hive_create_path }}"
+
+# Checks
+- name: check if hive version was already downloaded
+  stat:
+    path: "{{worker_download}}/hadoop-{{hive_version}}.tar.gz"
+  register: hive_version_downloaded
+
+- name: check if hive version is installed
+  stat:
+    path: "{{hive_path}}//hadoop-{{hive_version}}"
+  register: hadoop_version_installed
+
+# Install
+- include: install_hive.yml
+  when: install_hive
+
+# Config
+- include: config_hive.yml
+  when: config_hive
+
+# Init Hive
+- include: init_hive.yml
+  when: init_hive
+
+# Firewall
+- include: config_firewall.yml
+  when: not disable_firewall

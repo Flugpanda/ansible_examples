@@ -1,0 +1,21 @@
+---
+
+- name: Download hive
+  get_url:
+    url: "{{hadoop_download_url}}"
+    dest: "{{worker_download}}"
+  when: not hadoop_version_downloaded.stat.exists
+
+- name: Extract hive version {{hive_version}}
+  unarchive:
+    src: "{{worker_download}}/hadoop-{{hive_version}}.tar.gz"
+    dest: "{{hive_path}}"
+    remote_src: yes
+  when: not hadoop_version_installed.stat.exists
+
+- name: Change ownership, group and permissions of hive
+  file:
+    path: "{{hive_path}}"
+    owner: "{{hadoop_user}}"
+    group: "{{hadoop_user}}"
+    mode: '0755'

@@ -8,7 +8,9 @@
 # It's better to use a file to make this global
 # https://stackoverflow.com/questions/27733511/how-to-set-linux-environment-variables-with-ansible
 - name: Copy Java Home Script
-  template: src=set_java_home.sh dest=/etc/profile.d
+  template: src=set_java_home.sh dest=/etc/profile.d mode=755
 
 - name: Set Java Home Script
   shell: source /etc/profile.d/set_java_home.sh
+  become: yes
+  become_user: "{{hadoop_user}}"

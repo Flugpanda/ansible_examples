@@ -1,11 +1,15 @@
 ---
 # Create a user to run hadoop
-- name: Add the user {{ hadoop_user }}
-  user:
-    name: "{{ hadoop_user }}"
-    comment: User for running the hadoop
-    shell: /bin/bash
-    append: yes
+# - name: Add the user {{ hadoop_user }}
+#   user:
+#     name: "{{ hadoop_user }}"
+#     comment: User for running the hadoop
+#     shell: /bin/bash
+#     append: yes
+#   when: add_user
+
+- name: Add User 
+  user: name={{hadoop_user}} shell=/bin/bash append=yes
   when: add_user
 
 # check if the hadoop user has a public key
